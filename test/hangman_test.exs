@@ -2,6 +2,12 @@ defmodule HangmanTest do
   use ExUnit.Case
   doctest Hangman
 
+  defmodule TestGenerator do
+    @behaviour Hangman.Goal.Api
+
+    def generate, do: "hangman"
+  end
+
   describe "take_a_guess/2" do
     setup do
       {"_______", state} = Hangman.start_game()

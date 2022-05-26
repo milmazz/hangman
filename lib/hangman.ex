@@ -6,14 +6,13 @@ defmodule Hangman do
   alias Hangman.GameLogic
   alias Hangman.State
   alias Hangman.View
+  alias Hangman.Goal
 
   @doc """
   Starts the game 
   """
   def start_game do
-    word = "hangman"
-
-    word
+    Goal.generate()
     |> State.new()
     |> View.format_response()
   end
