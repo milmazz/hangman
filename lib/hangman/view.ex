@@ -3,18 +3,20 @@ defmodule Hangman.View do
   Presentation layer for the Hangman game
   """
 
+  alias Hangman.State
+
   @doc """
   Returns a human-friendly response
   """
-  def format_response(%{limit: limit, completed?: false} = state) when limit > 0 do
+  def format_response(%State{limit: limit, completed?: false} = state) when limit > 0 do
     {mask_word(state), state}
   end
 
-  def format_response(%{limit: limit, word: word} = state) when limit > 0 do
+  def format_response(%State{limit: limit, word: word} = state) when limit > 0 do
     {"You won, word was: #{word}", state}
   end
 
-  def format_response(%{word: word} = state) do
+  def format_response(%State{word: word} = state) do
     {"Game Over, word was: #{word}", state}
   end
 
