@@ -26,9 +26,9 @@ defmodule Hangman do
 
   ## Examples
 
-      iex> {_word, state} = Hangman.start_game()
-      iex> Hangman.take_a_guess("a", state) |> elem(0)
-      "_a___a_"
+      iex> {:ok, pid} = Hangman.start_link(:player)
+      iex> Hangman.take_a_guess(pid, "a")
+      "_a___a_. Te quedan 5 intentos."
 
   """
   def take_a_guess(player, letter) do

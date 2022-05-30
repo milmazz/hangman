@@ -10,28 +10,27 @@ defmodule HangmanTest do
 
   describe "take_a_guess/2" do
     setup do
-      {"_______", state} = Hangman.start_game()
+      {:ok, pid} = Hangman.start_link(:player)
 
-      %{state: state}
+      %{pid: pid}
     end
 
-    test "announces when the user wins", %{state: state} do
-      assert {"h______", state} = Hangman.take_a_guess("h", state)
-      {result, state} = check(["a", "n", "g", "m"], state)
+    test "announces when the user wins", %{pid: pid} do
+      assert "h______. Te quedan 5 intentos." = Hangman.take_a_guess(pid, "h")
+      result = check(["a", "n", "g", "m"], pid)
       assert "You won, word was: hangman" == result
-      assert state.completed?
     end
 
-    test "announces when the user loses", %{state: state} do
-      assert {"_______", state} = Hangman.take_a_guess("z", %{state | limit: 2})
-      assert {"Game Over, word was: hangman", state} = Hangman.take_a_guess("q", state)
-      refute state.completed?
+    test "announces when the user loses", %{pid: pid} do
+      assert "_______. Te quedan 4 intentos." = Hangman.take_a_guess(pid, "z")
+      result = check(["q", "w", "e", "r"], pid)
+      assert "Game Over, word was: hangman" == result
     end
   end
 
-  defp check(attempts, state) do
-    Enum.reduce(attempts, {"", state}, fn letter, {_, state} ->
-      Hangman.take_a_guess(letter, state)
+  defp check(attempts, pid) do
+    Enum.reduce(attempts, "", fn letter, _acc ->
+      Hangman.take_a_guess(pid, letter)
     end)
   end
 end
